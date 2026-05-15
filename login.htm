@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+
+    <!-- STYLE BAĞLANTISI -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main-container">
+    <div class="card">
+        <h1>Giriş Yap</h1>
+        <p>Hesabına eriş</p>
+
+        <form id="loginForm">
+            <input type="text" id="schoolNo" placeholder="Okul Numarası" required>
+            <input type="password" id="password" placeholder="Şifre" required>
+
+            <button type="submit">Giriş Yap</button>
+        </form>
+
+        <a href="register.html" class="link-btn">Hesabın yok mu? Kayıt Ol</a>
+    </div>
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const schoolNo = document.getElementById("schoolNo").value;
+    const password = document.getElementById("password").value;
+
+    const user = localStorage.getItem(schoolNo);
+
+    if (user) {
+        const data = JSON.parse(user);
+
+        if (data.password === password) {
+            localStorage.setItem("currentUser", schoolNo);
+            window.location.href = "dashboard.html";
+        } else {
+            alert("Şifre yanlış!");
+        }
+    } else {
+        alert("Kullanıcı bulunamadı!");
+    }
+});
+</script>
+
+</body>
+</html>

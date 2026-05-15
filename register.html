@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol</title>
+
+    <!-- STYLE BAĞLANTISI -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main-container">
+    <div class="card">
+        <h1>Kayıt Ol</h1>
+        <p>Yeni öğrenci hesabı oluştur</p>
+
+        <form id="registerForm">
+            <input type="text" id="name" placeholder="Ad Soyad" required>
+            <input type="text" id="schoolNo" placeholder="Okul Numarası" required>
+            <input type="text" id="className" placeholder="Sınıf" required>
+            <input type="password" id="password" placeholder="Şifre" required>
+            <input type="text" id="photo" placeholder="Fotoğraf URL" required>
+
+            <button type="submit">Kayıt Oluştur</button>
+        </form>
+
+        <div id="qrResult"></div>
+
+        <a href="login.html" class="link-btn">Zaten hesabın var mı? Giriş Yap</a>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const schoolNo = document.getElementById("schoolNo").value;
+    const className = document.getElementById("className").value;
+    const password = document.getElementById("password").value;
+    const photo = document.getElementById("photo").value;
+
+    const userData = {
+        name,
+        schoolNo,
+        className,
+        password,
+        photo,
+        qrID: schoolNo
+    };
+
+    localStorage.setItem(schoolNo, JSON.stringify(userData));
+
+    document.getElementById("qrResult").innerHTML = "";
+
+    new QRCode(document.getElementById("qrResult"), {
+        text: schoolNo,
+        width: 200,
+        height: 200,
+        colorDark: "#10a37f",
+        colorLight: "#ffffff"
+    });
+
+    alert("Kayıt başarılı! Giriş yapabilirsiniz.");
+});
+</script>
+
+</body>
+</html>

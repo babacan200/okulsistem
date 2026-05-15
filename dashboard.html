@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Paneli</title>
+
+    <!-- STYLE BAĞLANTISI -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main-container">
+    <div class="card">
+        <h1>Öğrenci Paneli</h1>
+        <p>Profil Bilgilerin</p>
+
+        <div id="profile"></div>
+
+        <div id="qrResult"></div>
+
+        <button onclick="logout()">Çıkış Yap</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+const currentUser = localStorage.getItem("currentUser");
+
+if (!currentUser) {
+    window.location.href = "login.html";
+}
+
+const user = JSON.parse(localStorage.getItem(currentUser));
+
+document.getElementById("profile").innerHTML = `
+    <img src="${user.photo}" alt="Profil Fotoğrafı" style="width:120px; border-radius:12px; margin-bottom:15px;">
+    <p><strong>Ad:</strong> ${user.name}</p>
+    <p><strong>Okul No:</strong> ${user.schoolNo}</p>
+    <p><strong>Sınıf:</strong> ${user.className}</p>
+`;
+
+new QRCode(document.getElementById("qrResult"), {
+    text: user.schoolNo,
+    width: 200,
+    height: 200,
+    colorDark: "#10a37f",
+    colorLight: "#ffffff"
+});
+
+function logout() {
+    localStorage.removeItem("currentUser");
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

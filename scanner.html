@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Kontrol Paneli</title>
+
+    <!-- STYLE BAĞLANTISI -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main-container">
+    <div class="card">
+        <h1>QR Kontrol Paneli</h1>
+        <p>Öğrenci QR kodunu doğrulayın</p>
+
+        <!-- QR GİRİŞ -->
+        <input type="text" id="scanInput" placeholder="QR Kod / Okul No">
+
+        <!-- KONTROL BUTONU -->
+        <button onclick="checkQR()">Kontrol Et</button>
+
+        <!-- SONUÇ -->
+        <div id="result"></div>
+
+        <!-- GERİ DÖN -->
+        <a href="index.html" class="link-btn">Kayıt Sayfasına Dön</a>
+    </div>
+</div>
+
+<script>
+function checkQR() {
+    const qrCode = document.getElementById("scanInput").value;
+    const user = localStorage.getItem(qrCode);
+
+    if (user) {
+        const data = JSON.parse(user);
+
+        document.getElementById("result").innerHTML = `
+            <h3>Giriş Onaylandı</h3>
+            <p><strong>Ad:</strong> ${data.name}</p>
+            <p><strong>Okul No:</strong> ${data.schoolNo}</p>
+            <p><strong>Sınıf:</strong> ${data.className}</p>
+        `;
+    } else {
+        document.getElementById("result").innerHTML = `
+            <p style="color:red;"><strong>Geçersiz QR Kod!</strong></p>
+        `;
+    }
+}
+</script>
+
+</body>
+</html>

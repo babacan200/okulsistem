@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okul QR Güvenlik Sistemi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main-container">
+    <div class="card">
+
+        <h1>Okul Güvenlik Sistemi</h1>
+        <p>QR Kod ile güvenli giriş sağlayın</p>
+
+        <button onclick="showSection('register')">Kayıt Ol</button>
+        <button onclick="showSection('login')">Giriş Yap</button>
+        <button onclick="showSection('admin')">Admin</button>
+        <button onclick="showSection('scanner')">Güvenlik Paneli</button>
+
+        <!-- KAYIT OL -->
+        <div id="register" class="section">
+            <form id="registerForm">
+                <input type="text" id="name" placeholder="Ad Soyad" required>
+                <input type="text" id="schoolNo" placeholder="Okul Numarası" required>
+                <input type="text" id="className" placeholder="Sınıf" required>
+                <input type="password" id="password" placeholder="Şifre" required>
+                <input type="text" id="photo" placeholder="Fotoğraf URL" required>
+                <button type="submit">Kayıt Oluştur</button>
+            </form>
+            <div id="qrResult"></div>
+        </div>
+
+        <!-- GİRİŞ YAP -->
+        <div id="login" class="section" style="display:none;">
+            <form id="loginForm">
+                <input type="text" id="loginSchoolNo" placeholder="Okul Numarası" required>
+                <input type="password" id="loginPassword" placeholder="Şifre" required>
+                <button type="submit">Giriş Yap</button>
+            </form>
+        </div>
+
+        <!-- ADMIN -->
+        <div id="admin" class="section" style="display:none;">
+            <input type="text" id="adminUser" placeholder="Admin Kullanıcı Adı">
+            <input type="password" id="adminPass" placeholder="Admin Şifre">
+            <button onclick="adminLogin()">Admin Giriş</button>
+        </div>
+
+        <!-- SCANNER -->
+        <div id="scanner" class="section" style="display:none;">
+            <a href="scanner.html" class="link-btn">Kamera ile QR Tara</a>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="script.js"></script>
+<script src="admin.js"></script>
+
+<script>
+function showSection(sectionId) {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => section.style.display = 'none');
+    document.getElementById(sectionId).style.display = 'block';
+}
+
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const schoolNo = document.getElementById("loginSchoolNo").value;
+    const password = document.getElementById("loginPassword").value;
+
+    const user = localStorage.getItem(schoolNo);
+
+    if (user) {
+        const data = JSON.parse(user);
+
+        if (data.password === password) {
+            localStorage.setItem("currentUser", schoolNo);
+            window.location.href = "dashboard.html";
+        } else {
+            alert("Şifre yanlış!");
+        }
+    } else {
+        alert("Kullanıcı bulunamadı!");
+    }
+});
+</script>
+
+</body>
+</html>

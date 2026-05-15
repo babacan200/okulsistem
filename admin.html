@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli</title>
+
+    <!-- STYLE BAĞLANTISI -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main-container">
+    <div class="card">
+        <h1>Admin Paneli</h1>
+        <p>Kayıtlı Öğrenciler</p>
+
+        <div id="studentList"></div>
+
+        <button onclick="logoutAdmin()">Admin Çıkış</button>
+    </div>
+</div>
+
+<script>
+function loadStudents() {
+    const studentList = document.getElementById("studentList");
+    studentList.innerHTML = "";
+
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+
+        if (key !== "currentUser") {
+            const user = JSON.parse(localStorage.getItem(key));
+
+            if (user.name) {
+                studentList.innerHTML += `
+                    <div style="background:#40414f; padding:15px; margin:10px 0; border-radius:10px;">
+                        <img src="${user.photo}" style="width:70px; border-radius:10px;">
+                        <p><strong>${user.name}</strong></p>
+                        <p>No: ${user.schoolNo}</p>
+                        <p>Sınıf: ${user.className}</p>
+                        <button onclick="deleteStudent('${user.schoolNo}')">Sil</button>
+                    </div>
+                `;
+            }
+        }
+    }
+}
+
+function deleteStudent(schoolNo) {
+    localStorage.removeItem(schoolNo);
+    loadStudents();
+}
+
+function logoutAdmin() {
+    window.location.href = "index.html";
+}
+
+loadStudents();
+</script>
+
+</body>
+</html>
